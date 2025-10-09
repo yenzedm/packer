@@ -148,19 +148,18 @@ source "proxmox-iso" "ubuntu-2404" {
     # PACKER Boot Commands
     boot_wait = "10s"
     boot_command = [
-        "<esc><wait>",
-        "e<wait>",
-        "<down><down><down><end>",
-        " autoinstall quiet ds=nocloud",
-        "<f10><wait>",
-        "<wait1m",
-        "yes<enter>"
+      "<esc><wait>",
+      "e<wait>",
+      "<down><down><down><end>",
+      " autoinstall ds=nocloud-net;s=file:///cdrom/ quiet ---<wait>",
+      "<f10><wait>"
     ]
+
 
     # Communicator Settings
     ssh_username = var.ssh_username
     ssh_password = var.ssh_password
-    ssh_timeout = "30m"
+    ssh_timeout = "15m"
 }
 
 ###############################################
@@ -175,12 +174,13 @@ build {
     provisioner "shell" {
         inline = [
             "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
+            "sudo timedatectl set-timezone Europe/Moscow",
             "sudo systemctl enable qemu-guest-agent",
             "sudo systemctl start qemu-guest-agent",
-            "sudo cloud-init clean",
+            "sudo cloud-init clean --logs",
             "sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg",
             "sudo rm -f /etc/netplan/00-installer-config.yaml",
-            "echo 'Ubuntu 24.04 Template by Packer - Creation Date: $(date)' | sudo tee /etc/issue"
+            "echo \"Ubuntu 24.04 Template by Packer - Creation Date: $(date)\" | sudo tee /etc/issue"
         ]
     }
 
@@ -237,5 +237,11 @@ build {
             "echo 'Installation and cleanup completed successfully'"
         ]
         expect_disconnect = true
+    }
+
+    provisioner "shell" {
+        scripts = [
+            "./scripts/ssh.sh"
+        ]
     }
 }
