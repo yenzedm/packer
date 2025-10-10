@@ -45,7 +45,6 @@ autoinstall:
       size: 0
   user-data:
     package_upgrade: false
-    timezone: UTC
     disable_root: false
   late-commands:
     - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu

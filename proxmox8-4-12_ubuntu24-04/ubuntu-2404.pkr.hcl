@@ -238,7 +238,7 @@ build {
         ]
         expect_disconnect = true
     }
-
+    
     provisioner "shell" {
         scripts = [
             "./scripts/ssh.sh"
