@@ -184,41 +184,6 @@ build {
         ]
     }
 
-    # Install Docker
-    provisioner "shell" {
-        inline = [
-            "echo 'Installing Docker...'",
-            "# Add Docker's official GPG key",
-            "sudo apt-get update",
-            "sudo apt-get install -y ca-certificates curl gnupg",
-            "sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg",
-
-            "# Add the Docker repository",
-            "sudo echo \"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
-            "sudo apt-get update",
-
-            "# Pin Docker version",
-            "sudo echo 'Package: docker-ce' | sudo tee /etc/apt/preferences.d/docker-ce",
-            "sudo echo 'Pin: version 5:27.1.1*' | sudo tee -a /etc/apt/preferences.d/docker-ce",
-            "sudo echo 'Pin-Priority: 999' | sudo tee -a /etc/apt/preferences.d/docker-ce",
-
-            "# Install Docker",
-            "sudo apt-get install -y docker-ce=5:27.1.1* docker-ce-cli=5:27.1.1* containerd.io docker-buildx-plugin docker-compose-plugin",
-
-            "# Add ubuntu user to docker group",
-            "sudo usermod -aG docker ubuntu",
-
-            "# Enable Docker service",
-            "sudo systemctl enable docker",
-
-            "# Verify installation",
-            "docker --version",
-            "docker compose version",
-
-            "echo 'Docker installation complete!'"
-        ]
-    }
-
     # Added provisioner to forcibly eject ISO and prepare for reboot
     provisioner "shell" {
         inline = [
