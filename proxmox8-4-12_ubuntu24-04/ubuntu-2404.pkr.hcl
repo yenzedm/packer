@@ -61,7 +61,7 @@ variable "ssh_password" {
     type = string
     description = "The password to use for SSH"
     sensitive = true
-    default = "ubuntu"
+    default = "user"
 }
 
 ###############################################

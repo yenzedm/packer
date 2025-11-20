@@ -6,8 +6,8 @@ autoinstall:
     layout: us
   identity:
     hostname: ubuntu-server
-    username: ubuntu
-    password: "$2b$12$wZFW2NFrHHy.wEYB0RAGgejJa08v.lsCQrlQdr/.JiYlwtnK8Jw72" # ubuntu
+    username: user
+    password: "$2b$12$sGoqX9U/chMTOlk65GKLGeEHSR39ZIoXgOPA3RWiqUnD/4nD81As2"
   ssh:
     install-server: true
     allow-pw: true
@@ -47,8 +47,8 @@ autoinstall:
     package_upgrade: false
     disable_root: false
   late-commands:
-    - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
-    - chmod 440 /target/etc/sudoers.d/ubuntu
+    - echo 'user ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/user
+    - chmod 440 /target/etc/sudoers.d/user
     - |
       if [ -d /sys/firmware/efi ]; then
         apt-get install -y efibootmgr
